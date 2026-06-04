@@ -1,236 +1,256 @@
 # 🎬 Real-Time Content Recommendation Lakehouse
 
 <p align="center">
-  <h3 align="center">Enterprise-Scale Recommendation Platform</h3>
-  <p align="center">
-    A production-inspired Lakehouse architecture for real-time content recommendations powered by Apache Kafka, Apache Spark, Apache Iceberg, Airflow, FastAPI, Redis, and AWS.
-  </p>
+
+![Python](https://img.shields.io/badge/Python-3.11+-blue)
+![Apache Kafka](https://img.shields.io/badge/Apache-Kafka-black)
+![Apache Spark](https://img.shields.io/badge/Apache-Spark-orange)
+![Apache Iceberg](https://img.shields.io/badge/Apache-Iceberg-blue)
+![Airflow](https://img.shields.io/badge/Apache-Airflow-green)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688)
+![Redis](https://img.shields.io/badge/Redis-red)
+![AWS S3](https://img.shields.io/badge/AWS-S3-orange)
+![Docker](https://img.shields.io/badge/Docker-blue)
+
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Apache-Kafka-black?logo=apachekafka">
-  <img src="https://img.shields.io/badge/Apache-Spark-E25A1C?logo=apachespark">
-  <img src="https://img.shields.io/badge/Apache-Iceberg-2F80ED">
-  <img src="https://img.shields.io/badge/Airflow-017CEE?logo=apacheairflow">
-  <img src="https://img.shields.io/badge/FastAPI-009688?logo=fastapi">
-  <img src="https://img.shields.io/badge/Redis-DC382D?logo=redis">
-  <img src="https://img.shields.io/badge/AWS-S3-orange?logo=amazonaws">
-  <img src="https://img.shields.io/badge/Docker-2496ED?logo=docker">
+Enterprise-Scale Real-Time Content Recommendation Platform built using Apache Kafka, Spark Structured Streaming, Apache Iceberg, Airflow, FastAPI, Redis and AWS.
+</p>
+
+<p align="center">
+Inspired by large-scale recommendation architectures used by Netflix, Disney+, Prime Video, YouTube and Hotstar.
 </p>
 
 ---
 
-## 📌 Overview
+## 📸 Project Preview
 
-Modern streaming platforms process millions of user interactions every day. Every click, search, watch event, rating, and session contributes to understanding user preferences and generating personalized recommendations.
-
-This project implements a complete **Lakehouse-based Recommendation System** capable of:
-
-- Real-time event ingestion
-- Distributed stream processing
-- Medallion data architecture
-- ACID-compliant Lakehouse storage
-- Collaborative filtering model training
-- Low-latency recommendation serving
-- Interactive analytics and monitoring
-
-The platform demonstrates how organizations such as Netflix, Disney+, Prime Video, and Hotstar architect scalable recommendation systems that combine streaming analytics, machine learning, and operational data platforms.
+<p align="center">
+  <img src="./Screenshots/1.png" width="1000" alt="Project Preview">
+</p>
 
 ---
 
-## 🚀 Key Features
+# 📑 Table of Contents
 
-### Real-Time Streaming Pipeline
-
-- High-throughput Kafka event ingestion
-- Spark Structured Streaming processing
-- Event enrichment and validation
-- Sessionization and behavioral analytics
-- Near real-time recommendation updates
-
-### Modern Lakehouse Architecture
-
-- Apache Iceberg table format
-- ACID transactions
-- Schema evolution
-- Time-travel queries
-- Snapshot rollback support
-
-### Recommendation Engine
-
-- Collaborative Filtering using ALS
-- Implicit feedback modeling
-- User-item interaction scoring
-- Incremental retraining workflows
-- Personalized Top-N recommendations
-
-### Recommendation Serving Layer
-
-- FastAPI microservices
-- Redis caching layer
-- Low-latency recommendation retrieval
-- Content similarity search
-- User profile APIs
-
-### Production Observability
-
-- Prometheus metrics
-- Grafana dashboards
-- Spark monitoring
-- Airflow DAG visibility
-- Pipeline health tracking
+* Overview
+* Business Problem
+* Architecture
+* Technology Stack
+* Data Flow
+* Medallion Architecture
+* Recommendation Engine
+* API Layer
+* Monitoring & Observability
+* Repository Structure
+* Getting Started
+* Future Enhancements
+* Engineering Concepts
+* Author
 
 ---
 
-# 📊 System Capabilities
+# 📌 Overview
 
-| Metric | Scale |
-|----------|----------|
-| Daily Events Processed | 10M+ |
-| Registered Users | 1M+ |
-| Content Catalog Size | 100K+ |
-| Recommendation Throughput | Millions per run |
-| End-to-End Streaming Latency | < 10 sec |
-| Cached API Latency | < 20ms |
-| Recommendation Refresh | Hourly |
-| Recommendation API Availability | High Availability Design |
+Modern streaming platforms generate millions of user interactions every day. Every watch event, click, search, rating, and session contributes to understanding user preferences and delivering personalized recommendations.
+
+This project demonstrates a complete Lakehouse-based recommendation platform capable of:
+
+* Real-time event ingestion
+* Stream processing at scale
+* Medallion data architecture
+* ACID-compliant data lakehouse
+* Machine learning model training
+* Low-latency recommendation serving
+* Interactive analytics and monitoring
+
+---
+
+# 🎯 Business Problem
+
+Recommendation systems must satisfy two critical requirements:
+
+1. React to user behavior in near real time
+2. Leverage historical behavioral data for personalization
+
+Traditional architectures often separate analytics and operational systems, leading to duplicated data, increased costs, and maintenance complexity.
+
+This project demonstrates how a modern Lakehouse architecture unifies:
+
+* Streaming
+* Analytics
+* Machine Learning
+* Recommendation Serving
+* Monitoring
+
+within a single scalable platform.
+
+---
+
+# 🛠 Technology Stack
+
+| Layer             | Technology                        |
+| ----------------- | --------------------------------- |
+| Event Streaming   | Apache Kafka                      |
+| Processing Engine | Apache Spark Structured Streaming |
+| Lakehouse Format  | Apache Iceberg                    |
+| Data Lake         | AWS S3                            |
+| Orchestration     | Apache Airflow                    |
+| Machine Learning  | Spark MLlib ALS                   |
+| API Serving       | FastAPI                           |
+| Cache Layer       | Redis                             |
+| Monitoring        | Prometheus + Grafana              |
+| Dashboard         | Streamlit                         |
+| Containerization  | Docker                            |
 
 ---
 
 # 🏗️ Architecture
 
 ```text
-┌──────────────────────────────────────────────────────┐
-│                 Client Applications                  │
-│       Mobile • Web • Smart TV • Partner APIs        │
-└─────────────────────────┬────────────────────────────┘
-                          │
-                          ▼
-┌──────────────────────────────────────────────────────┐
-│                   Apache Kafka                       │
-│ Watch Events • Clicks • Ratings • Searches          │
-└─────────────────────────┬────────────────────────────┘
-                          │
-                          ▼
-┌──────────────────────────────────────────────────────┐
-│        Apache Spark Structured Streaming            │
-│ Validation • Enrichment • Sessionization            │
-└─────────────────────────┬────────────────────────────┘
-                          │
-          ┌───────────────┼───────────────┐
-          ▼               ▼               ▼
-      Bronze          Silver          Gold
-       Layer           Layer          Layer
-          │               │               │
-          └───────────────┼───────────────┘
-                          ▼
-┌──────────────────────────────────────────────────────┐
-│              Apache Iceberg Lakehouse               │
-│ ACID • Time Travel • Snapshots • Evolution          │
-└─────────────────────────┬────────────────────────────┘
-                          ▼
-┌──────────────────────────────────────────────────────┐
-│              Spark MLlib ALS Model                  │
-│          Recommendation Generation                  │
-└─────────────────────────┬────────────────────────────┘
-                          ▼
-┌──────────────────────────────────────────────────────┐
-│             FastAPI + Redis Cache                   │
-│         Recommendation Serving Layer               │
-└─────────────────────────┬────────────────────────────┘
-                          ▼
-┌──────────────────────────────────────────────────────┐
-│            Streamlit Analytics Dashboard            │
-└──────────────────────────────────────────────────────┘
+Client Applications
+(Web • Mobile • Smart TV)
+          │
+          ▼
+    Apache Kafka
+          │
+          ▼
+Spark Structured Streaming
+          │
+ ┌────────┼────────┐
+ ▼        ▼        ▼
+Bronze  Silver   Gold
+ Layer   Layer   Layer
+          │
+          ▼
+ Apache Iceberg
+          │
+          ▼
+ Spark MLlib ALS
+          │
+          ▼
+ Recommendation Engine
+          │
+          ▼
+ FastAPI + Redis
+          │
+          ▼
+ Applications
 ```
 
 ---
 
-# 🎯 Business Problem
+# ⚡ End-to-End Data Flow
 
-Recommendation systems must balance two competing requirements:
-
-1. Real-time responsiveness to user activity
-2. Historical analytical depth for accurate personalization
-
-Traditional architectures often separate operational and analytical workloads, resulting in duplicated storage, increased costs, and complex maintenance.
-
-This project demonstrates how a modern Lakehouse architecture unifies streaming, analytics, machine learning, and recommendation serving within a single scalable platform.
+```text
+User Activity
+      │
+      ▼
+Apache Kafka
+      │
+      ▼
+Spark Streaming
+      │
+      ▼
+Bronze Layer
+      │
+      ▼
+Silver Layer
+      │
+      ▼
+Gold Features
+      │
+      ▼
+ALS Training
+      │
+      ▼
+Recommendations
+      │
+      ▼
+Redis Cache
+      │
+      ▼
+FastAPI
+      │
+      ▼
+Applications
+```
 
 ---
 
 # 🥉 Bronze Layer
 
-The Bronze Layer serves as the immutable source of truth.
+Raw immutable ingestion layer.
 
 ### Responsibilities
 
-- Raw event ingestion
-- Historical replay capability
-- Auditability
-- Data lineage preservation
+* Event ingestion
+* Historical replay
+* Auditability
+* Data lineage preservation
 
 ### Event Types
 
-- Watch Events
-- Click Events
-- Search Events
-- Rating Events
+* Watch Events
+* Click Events
+* Search Events
+* Rating Events
 
 ---
 
 # 🥈 Silver Layer
 
-The Silver Layer transforms raw events into trusted analytical datasets.
+Trusted analytical datasets.
 
-### Processing Logic
+### Processing
 
-- Event deduplication
-- Schema validation
-- Null handling
-- Sessionization
-- Metadata enrichment
-- Late-event management
+* Deduplication
+* Validation
+* Null handling
+* Sessionization
+* Metadata enrichment
+* Late event processing
 
 ### Outputs
 
-- User interaction datasets
-- Session analytics
-- Enriched content metadata
-- Behavioral profiles
+* User interactions
+* Session analytics
+* Behavioral profiles
+* Content metadata
 
 ---
 
 # 🥇 Gold Layer
 
-The Gold Layer creates machine-learning-ready features.
+Machine-learning-ready datasets.
 
 ### Generated Features
 
-- User-item interaction matrix
-- Genre affinity vectors
-- Content popularity scores
-- Session engagement metrics
-- Collaborative filtering signals
-- Cold-start mitigation features
+* User-item interaction matrix
+* Genre affinity vectors
+* Content popularity scores
+* Session engagement metrics
+* Collaborative filtering features
+* Cold-start mitigation features
 
 ---
 
 # 🤖 Recommendation Engine
 
-The recommendation system leverages Spark MLlib's Alternating Least Squares (ALS) algorithm to discover latent relationships between users and content.
+The recommendation system uses Spark MLlib's ALS (Alternating Least Squares) algorithm.
 
-## Interaction Scoring
+### Signals Used
 
-| Signal | Weight |
-|----------|----------|
-| Completion Rate | 1.0 |
-| Rating | 0.9 |
-| Watch Duration | 0.7 |
-| Click | 0.4 |
-| Search Match | 0.3 |
+| Signal          | Weight |
+| --------------- | ------ |
+| Completion Rate | 1.0    |
+| Rating          | 0.9    |
+| Watch Duration  | 0.7    |
+| Click           | 0.4    |
+| Search Match    | 0.3    |
 
-## Model Configuration
+### ALS Configuration
 
 ```python
 als = ALS(
@@ -245,15 +265,17 @@ als = ALS(
 )
 ```
 
-### Training Strategy
+### Capabilities
 
-The platform supports incremental retraining using newly generated interaction signals, reducing compute costs while ensuring recommendations remain fresh and relevant.
+* Collaborative filtering
+* Personalized recommendations
+* Top-N ranking
+* Implicit feedback learning
+* Incremental retraining
 
 ---
 
-# ❄️ Apache Iceberg Capabilities
-
-Apache Iceberg serves as the transactional foundation of the Lakehouse.
+# ❄️ Apache Iceberg Features
 
 ### ACID Transactions
 
@@ -288,61 +310,21 @@ CALL system.rollback_to_snapshot(
 
 ---
 
-# ⚡ Data Flow
-
-```text
-User Activity
-      │
-      ▼
-Apache Kafka
-      │
-      ▼
-Spark Streaming
-      │
-      ▼
-Bronze Layer
-      │
-      ▼
-Silver Layer
-      │
-      ▼
-Gold Features
-      │
-      ▼
-ALS Model Training
-      │
-      ▼
-Recommendation Generation
-      │
-      ▼
-Redis Cache
-      │
-      ▼
-FastAPI APIs
-      │
-      ▼
-Applications
-```
-
----
-
 # 🌐 API Layer
 
-## Recommendation APIs
-
-### Get Personalized Recommendations
+### Personalized Recommendations
 
 ```http
 GET /recommendations/{user_id}
 ```
 
-### Similar Content Lookup
+### Similar Content
 
 ```http
 GET /content/{content_id}/similar
 ```
 
-### User Preference Profile
+### User Profile
 
 ```http
 GET /users/{user_id}/profile
@@ -364,27 +346,27 @@ GET /analytics/trending
 
 # 🚀 Performance Optimizations
 
-### Apache Spark
+## Apache Spark
 
-- Adaptive Query Execution
-- Broadcast Joins
-- Predicate Pushdown
-- Partition Pruning
-- Vectorized Parquet Reads
-- Optimized Shuffle Operations
+* Adaptive Query Execution
+* Broadcast Joins
+* Predicate Pushdown
+* Partition Pruning
+* Vectorized Reads
+* Optimized Shuffle Operations
 
-### Recommendation Serving
+## Serving Layer
 
-- Redis-backed caching
-- Pre-computed recommendation sets
-- Asynchronous FastAPI endpoints
-- Cache invalidation after model refresh
+* Redis Caching
+* Pre-computed Recommendations
+* Async FastAPI Endpoints
+* Cache Invalidation Strategy
 
 ---
 
 # 🔄 Workflow Orchestration
 
-All workflows are orchestrated using Apache Airflow.
+Managed through Apache Airflow.
 
 ```text
 Kafka Streams
@@ -405,7 +387,7 @@ ALS Model Training
 Recommendation Generation
       │
       ▼
-Redis Cache Population
+Redis Population
       │
       ▼
 Dashboard Refresh
@@ -415,38 +397,51 @@ Dashboard Refresh
 
 # 📈 Monitoring & Observability
 
-## Metrics Tracked
+## Metrics
 
-| Metric | Threshold |
-|----------|------------|
-| Kafka Consumer Lag | >10,000 |
-| Streaming Delay | >30 sec |
-| Training Duration | >45 min |
-| API P99 Latency | >200ms |
-| Cache Hit Rate | <85% |
-| Snapshot Growth | >500/day |
+| Metric             | Threshold |
+| ------------------ | --------- |
+| Kafka Consumer Lag | >10,000   |
+| Streaming Delay    | >30 sec   |
+| Training Duration  | >45 min   |
+| API P99 Latency    | >200 ms   |
+| Cache Hit Rate     | <85%      |
+| Snapshot Growth    | >500/day  |
 
-## Monitoring Stack
+## Stack
 
-- Prometheus
-- Grafana
-- Spark History Server
-- Airflow UI
-- FastAPI Metrics Endpoint
+* Prometheus
+* Grafana
+* Spark History Server
+* Airflow UI
+* FastAPI Metrics
+
+---
+
+# 📊 System Capabilities
+
+| Metric                    | Scale            |
+| ------------------------- | ---------------- |
+| Daily Events Processed    | 10M+             |
+| Registered Users          | 1M+              |
+| Content Catalog           | 100K+            |
+| Recommendation Throughput | Millions per run |
+| Streaming Latency         | <10 sec          |
+| Cached API Latency        | <20 ms           |
+| Recommendation Refresh    | Hourly           |
 
 ---
 
 # 🛡️ Production Readiness
 
-- Fault-tolerant Kafka ingestion
-- Spark checkpointing
-- Iceberg snapshot recovery
-- Schema evolution support
-- Retryable Airflow DAGs
-- Redis cache invalidation
-- Distributed processing architecture
-- Horizontal scalability
-- Observability and alerting
+* Fault-tolerant Kafka ingestion
+* Spark checkpointing
+* Iceberg recovery support
+* Schema evolution
+* Retryable Airflow DAGs
+* Redis cache invalidation
+* Horizontal scalability
+* Observability and alerting
 
 ---
 
@@ -456,34 +451,14 @@ Dashboard Refresh
 content-recommender/
 │
 ├── producers/
-│   ├── watch_producer.py
-│   ├── click_producer.py
-│   ├── rating_producer.py
-│   └── search_producer.py
-│
 ├── spark_jobs/
-│   ├── bronze_ingestion.py
-│   ├── silver_user_profiles.py
-│   ├── gold_feature_engineering.py
-│   ├── train_als_model.py
-│   └── generate_recommendations.py
-│
 ├── iceberg_setup/
-│   └── create_tables.py
-│
 ├── api/
-│   ├── main.py
-│   ├── routes/
-│   └── cache/
-│
 ├── airflow/
-│   └── dags/
-│
 ├── dashboard/
-│   └── app.py
-│
 ├── scripts/
-│   └── init_kafka_topics.sh
+├── Screenshots/
+│   └── 1.png
 │
 ├── docker-compose.yml
 ├── requirements.txt
@@ -497,8 +472,8 @@ content-recommender/
 ## Clone Repository
 
 ```bash
-git clone <repository-url>
-cd content-recommender
+git clone https://github.com/Jaskirat8904/Content-Recommendation-System.git
+cd Content-Recommendation-System
 ```
 
 ## Install Dependencies
@@ -523,15 +498,6 @@ bash scripts/init_kafka_topics.sh
 
 ```bash
 spark-submit iceberg_setup/create_tables.py
-```
-
-## Start Event Producers
-
-```bash
-python producers/watch_producer.py &
-python producers/click_producer.py &
-python producers/rating_producer.py &
-python producers/search_producer.py &
 ```
 
 ## Launch Streaming Jobs
@@ -567,41 +533,66 @@ streamlit run dashboard/app.py
 
 ---
 
-# 💡 Engineering Concepts Demonstrated
+# 🎯 Engineering Highlights
 
-- Data Engineering
-- Distributed Systems
-- Event-Driven Architecture
-- Real-Time Stream Processing
-- Apache Spark Optimization
-- Apache Iceberg
-- Lakehouse Architecture
-- Recommendation Systems
-- Machine Learning Engineering
-- Workflow Orchestration
-- API Development
-- Observability & Monitoring
-- Cloud Data Platforms
-- Scalable System Design
+✅ End-to-End Lakehouse Architecture
+
+✅ Real-Time Streaming Pipelines
+
+✅ Apache Iceberg Implementation
+
+✅ Distributed Spark Processing
+
+✅ Collaborative Filtering Recommendation Engine
+
+✅ FastAPI Recommendation Serving
+
+✅ Redis Low-Latency Caching
+
+✅ Production Monitoring Stack
+
+✅ Event-Driven System Design
+
+✅ Scalable Data Engineering Practices
 
 ---
 
 # 🔮 Future Enhancements
 
-- Hybrid Recommendation Models
-- Deep Learning Ranking Systems
-- Vector Search Retrieval
-- Feature Store Integration
-- Kubernetes Deployment
-- Real-Time Feature Serving
-- A/B Testing Framework
-- Multi-Region Data Replication
+* Hybrid Recommendation Models
+* Deep Learning Ranking
+* Vector Search Retrieval
+* Feature Store Integration
+* Kubernetes Deployment
+* Real-Time Feature Serving
+* A/B Testing Framework
+* Multi-Region Replication
+* MLOps Automation
+
+---
+
+# 📚 Engineering Concepts Demonstrated
+
+* Data Engineering
+* Distributed Systems
+* Event-Driven Architecture
+* Real-Time Stream Processing
+* Apache Spark Optimization
+* Apache Iceberg
+* Lakehouse Architecture
+* Recommendation Systems
+* Machine Learning Engineering
+* Workflow Orchestration
+* API Development
+* Observability
+* Cloud Data Platforms
+* Scalable System Design
 
 ---
 
 # 📜 License
 
-This project is intended for educational, research, and portfolio demonstration purposes.
+This project is intended for educational, research and portfolio demonstration purposes.
 
 ---
 
@@ -609,5 +600,14 @@ This project is intended for educational, research, and portfolio demonstration 
 
 **Jaskirat Singh**
 
-Data Engineering • Distributed Systems • Machine Learning • Big Data Analytics
+Data Engineering • Distributed Systems • Big Data • Machine Learning
 
+### Connect
+
+* GitHub: https://github.com/Jaskirat8904
+* LinkedIn: https://linkedin.com/in/your-linkedin
+* Email: [your-email@example.com](mailto:your-email@example.com)
+
+---
+
+⭐ If you found this project useful, consider starring the repository.
